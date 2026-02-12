@@ -1,3 +1,5 @@
+print("Starting up...")
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
@@ -25,16 +27,24 @@ ARTIFACTS_PATH = os.path.join(os.path.dirname(__file__),"model_artifacts")
 print("Loading artifacts...")
 item_factors = joblib.load(f"{ARTIFACTS_PATH}/item_factors.pkl")
 item_factors = np.nan_to_num(item_factors.astype(np.float64), nan=0.0, posinf=0.0, neginf=0.0)
+print("item artifacts loaded..")
 
 content_matrix = joblib.load(f"{ARTIFACTS_PATH}/content_matrix.pkl")
 content_matrix = np.asarray(content_matrix, dtype=np.float64)
+print("content matrix loaded..")
 
 film_enc = joblib.load(f"{ARTIFACTS_PATH}/film_enc.pkl")
+print("film enc loaded..")
+
 film_data = joblib.load(f"{ARTIFACTS_PATH}/film_data.pkl")
+print("film data loaded..")
+
 global_mean = joblib.load(f"{ARTIFACTS_PATH}/global_mean.pkl")
+print("global mean loaded..")
 
 film_id_to_pos = {fid: i for i, fid in enumerate(film_data["id"])}
 initial_films = pd.read_json(f"{ARTIFACTS_PATH}/initial_films.json")
+print("initial films loaded..")
 
 # Precompute content_matrix indexed by film_enc order
 print("Building content lookup...")
